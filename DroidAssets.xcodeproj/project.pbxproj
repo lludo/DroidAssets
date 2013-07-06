@@ -7,15 +7,25 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		82B43D311788A03F00BC3760 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 82B43D301788A03F00BC3760 /* QuartzCore.framework */; };
+		82B43D341788B14F00BC3760 /* NSImage+PixelSize.m in Sources */ = {isa = PBXBuildFile; fileRef = 82B43D331788B14F00BC3760 /* NSImage+PixelSize.m */; };
 		82EAB25A178645610097307A /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 82EAB259178645610097307A /* Cocoa.framework */; };
 		82EAB264178645610097307A /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 82EAB262178645610097307A /* InfoPlist.strings */; };
 		82EAB266178645610097307A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 82EAB265178645610097307A /* main.m */; };
 		82EAB26A178645610097307A /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 82EAB268178645610097307A /* Credits.rtf */; };
 		82EAB26D178645610097307A /* LGMAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 82EAB26C178645610097307A /* LGMAppDelegate.m */; };
 		82EAB270178645610097307A /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 82EAB26E178645610097307A /* MainMenu.xib */; };
+		82EAB279178645AD0097307A /* LGMDragAndDropViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 82EAB277178645AD0097307A /* LGMDragAndDropViewController.m */; };
+		82EAB27A178645AD0097307A /* LGMDragAndDropViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 82EAB278178645AD0097307A /* LGMDragAndDropViewController.xib */; };
+		82EAB27D17864A880097307A /* LGMDragAndDropView.m in Sources */ = {isa = PBXBuildFile; fileRef = 82EAB27C17864A880097307A /* LGMDragAndDropView.m */; };
+		82EAB28017864F230097307A /* LGMAssetResizer.m in Sources */ = {isa = PBXBuildFile; fileRef = 82EAB27F17864F230097307A /* LGMAssetResizer.m */; };
+		82EAB28317864F730097307A /* LGMFileManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 82EAB28217864F730097307A /* LGMFileManager.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		82B43D301788A03F00BC3760 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		82B43D321788B14F00BC3760 /* NSImage+PixelSize.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSImage+PixelSize.h"; sourceTree = "<group>"; };
+		82B43D331788B14F00BC3760 /* NSImage+PixelSize.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSImage+PixelSize.m"; sourceTree = "<group>"; };
 		82EAB256178645610097307A /* DroidAssets.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DroidAssets.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		82EAB259178645610097307A /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		82EAB25C178645610097307A /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
@@ -29,6 +39,15 @@
 		82EAB26B178645610097307A /* LGMAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LGMAppDelegate.h; sourceTree = "<group>"; };
 		82EAB26C178645610097307A /* LGMAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LGMAppDelegate.m; sourceTree = "<group>"; };
 		82EAB26F178645610097307A /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/MainMenu.xib; sourceTree = "<group>"; };
+		82EAB276178645AD0097307A /* LGMDragAndDropViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGMDragAndDropViewController.h; sourceTree = "<group>"; };
+		82EAB277178645AD0097307A /* LGMDragAndDropViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGMDragAndDropViewController.m; sourceTree = "<group>"; };
+		82EAB278178645AD0097307A /* LGMDragAndDropViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LGMDragAndDropViewController.xib; sourceTree = "<group>"; };
+		82EAB27B17864A880097307A /* LGMDragAndDropView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGMDragAndDropView.h; sourceTree = "<group>"; };
+		82EAB27C17864A880097307A /* LGMDragAndDropView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGMDragAndDropView.m; sourceTree = "<group>"; };
+		82EAB27E17864F230097307A /* LGMAssetResizer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGMAssetResizer.h; sourceTree = "<group>"; };
+		82EAB27F17864F230097307A /* LGMAssetResizer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGMAssetResizer.m; sourceTree = "<group>"; };
+		82EAB28117864F730097307A /* LGMFileManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGMFileManager.h; sourceTree = "<group>"; };
+		82EAB28217864F730097307A /* LGMFileManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGMFileManager.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -36,6 +55,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				82B43D311788A03F00BC3760 /* QuartzCore.framework in Frameworks */,
 				82EAB25A178645610097307A /* Cocoa.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -46,6 +66,7 @@
 		82EAB24D178645610097307A = {
 			isa = PBXGroup;
 			children = (
+				82B43D301788A03F00BC3760 /* QuartzCore.framework */,
 				82EAB25F178645610097307A /* DroidAssets */,
 				82EAB258178645610097307A /* Frameworks */,
 				82EAB257178645610097307A /* Products */,
@@ -85,6 +106,17 @@
 				82EAB26B178645610097307A /* LGMAppDelegate.h */,
 				82EAB26C178645610097307A /* LGMAppDelegate.m */,
 				82EAB26E178645610097307A /* MainMenu.xib */,
+				82EAB276178645AD0097307A /* LGMDragAndDropViewController.h */,
+				82EAB277178645AD0097307A /* LGMDragAndDropViewController.m */,
+				82EAB278178645AD0097307A /* LGMDragAndDropViewController.xib */,
+				82EAB27B17864A880097307A /* LGMDragAndDropView.h */,
+				82EAB27C17864A880097307A /* LGMDragAndDropView.m */,
+				82EAB27E17864F230097307A /* LGMAssetResizer.h */,
+				82EAB27F17864F230097307A /* LGMAssetResizer.m */,
+				82EAB28117864F730097307A /* LGMFileManager.h */,
+				82EAB28217864F730097307A /* LGMFileManager.m */,
+				82B43D321788B14F00BC3760 /* NSImage+PixelSize.h */,
+				82B43D331788B14F00BC3760 /* NSImage+PixelSize.m */,
 				82EAB260178645610097307A /* Supporting Files */,
 			);
 			path = DroidAssets;
@@ -157,6 +189,7 @@
 				82EAB264178645610097307A /* InfoPlist.strings in Resources */,
 				82EAB26A178645610097307A /* Credits.rtf in Resources */,
 				82EAB270178645610097307A /* MainMenu.xib in Resources */,
+				82EAB27A178645AD0097307A /* LGMDragAndDropViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -169,6 +202,11 @@
 			files = (
 				82EAB266178645610097307A /* main.m in Sources */,
 				82EAB26D178645610097307A /* LGMAppDelegate.m in Sources */,
+				82EAB279178645AD0097307A /* LGMDragAndDropViewController.m in Sources */,
+				82EAB27D17864A880097307A /* LGMDragAndDropView.m in Sources */,
+				82EAB28017864F230097307A /* LGMAssetResizer.m in Sources */,
+				82EAB28317864F730097307A /* LGMFileManager.m in Sources */,
+				82B43D341788B14F00BC3760 /* NSImage+PixelSize.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -268,6 +306,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "DroidAssets/DroidAssets-Prefix.pch";
 				INFOPLIST_FILE = "DroidAssets/DroidAssets-Info.plist";
+				MACOSX_DEPLOYMENT_TARGET = 10.8;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -280,6 +319,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "DroidAssets/DroidAssets-Prefix.pch";
 				INFOPLIST_FILE = "DroidAssets/DroidAssets-Info.plist";
+				MACOSX_DEPLOYMENT_TARGET = 10.8;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -304,6 +344,7 @@
 				82EAB275178645610097307A /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
