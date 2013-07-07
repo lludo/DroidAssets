@@ -11,7 +11,7 @@
 #include <QuartzCore/CoreImage.h>
 
 @interface LGMAssetResizer ()
-+ (NSDictionary *)getPatchDescriptionForImage:(NSImage *)image;
++ (NSDictionary *)getPatchDescriptionForImage:(CGImageRef)imageRef;
 @end
 
 @implementation LGMAssetResizer
@@ -35,14 +35,41 @@
     float scale = [destinationScale floatValue] / [sourceScale floatValue];
     
     NSImage *inputImage = [[NSImage alloc] initWithContentsOfFile:imagePath];
-    CGImageRef imageRef = [inputImage CGImageForProposedRect:NULL context:nil hints:nil];
     NSSize inputImagePixelSize = inputImage.pixelSize;
     
+    CGImageRef inputImageRef = [inputImage CGImageForProposedRect:NULL context:nil hints:nil];
     NSBitmapImageRep *outputImageRep;
+    
     if (isNinePatch) {
         // For images with 9-patch
-        NSSize outputSize = NSMakeSize(floorf(((inputImagePixelSize.width - 2) * scale + 2)),
-                                       floorf(((inputImagePixelSize.height - 2) * scale + 2)));
+        NSSize contentOriginalSize = NSMakeSize(floorf(inputImagePixelSize.width - 2),
+                                                floorf(inputImagePixelSize.height - 2));
+        
+        NSSize outputSize = NSMakeSize(floorf(contentOriginalSize.width * scale) + 2,
+                                       floorf(contentOriginalSize.height * scale) + 2);
+        
+        NSBitmapImageRep *contentImageRep = [[NSBitmapImageRep alloc] initWithBitmapDataPlanes:nil
+                                                                                    pixelsWide:contentOriginalSize.width
+                                                                                    pixelsHigh:contentOriginalSize.height
+                                                                                 bitsPerSample:8
+                                                                               samplesPerPixel:4
+                                                                                      hasAlpha:YES
+                                                                                      isPlanar:NO
+                                                                                colorSpaceName:NSCalibratedRGBColorSpace
+                                                                                  bitmapFormat:0
+                                                                                   bytesPerRow:(4 * contentOriginalSize.width)
+                                                                                  bitsPerPixel:32];
+        
+        [NSGraphicsContext saveGraphicsState];
+        [NSGraphicsContext setCurrentContext:[NSGraphicsContext graphicsContextWithBitmapImageRep:contentImageRep]];
+        [[NSGraphicsContext currentContext] setImageInterpolation:NSImageInterpolationHigh];
+        
+        [inputImage drawInRect:NSMakeRect(0, 0, contentOriginalSize.width, contentOriginalSize.height)
+                      fromRect:NSMakeRect(1, 1, inputImage.size.width - 2, inputImage.size.height - 2)
+                     operation:NSCompositeSourceOver
+                      fraction:1.0];
+        
+        [NSGraphicsContext restoreGraphicsState];
         
         outputImageRep = [[NSBitmapImageRep alloc] initWithBitmapDataPlanes:nil
                                                                  pixelsWide:outputSize.width
@@ -62,7 +89,7 @@
         
         // Draw the 9-patch arround the image
         [[NSColor blackColor] setFill];
-        NSDictionary *patchDescription = [self getPatchDescriptionForImage:inputImage];
+        NSDictionary *patchDescription = [self getPatchDescriptionForImage:inputImageRef];
         NSArray *top = [patchDescription objectForKey:@"top"];
         for (NSInteger ndx = 0; ndx < [top count]; ndx = ndx+2) {
             float start = [[top objectAtIndex:ndx] floatValue];
@@ -101,11 +128,15 @@
         }
         
         // Draw the image in the center
-        [inputImage drawInRect:NSMakeRect(1, 1, outputSize.width - 2, outputSize.height - 2)
-                      fromRect:NSMakeRect(1, 1, inputImage.size.width - 2, inputImage.size.height - 2)
-                     operation:NSCompositeSourceOver
-                      fraction:1.0];
+        [contentImageRep drawInRect:NSMakeRect(1, 1, outputSize.width - 2, outputSize.height - 2)
+                           fromRect:NSZeroRect
+                          operation:NSCompositeSourceOver
+                           fraction:1.0
+                     respectFlipped:YES
+                              hints:nil];
+        
         [NSGraphicsContext restoreGraphicsState];
+        
     } else {
         // For simple PNG images
         NSSize outputSize = NSMakeSize(floorf(inputImagePixelSize.width * scale),
@@ -136,7 +167,7 @@
     return outputImageRep;
 }
 
-+ (NSDictionary *)getPatchDescriptionForImage:(NSImage *)image {
++ (NSDictionary *)getPatchDescriptionForImage:(CGImageRef)imageRef {
     NSDictionary *patchDescription = @{
         @"top": [NSMutableArray array],
         @"left": [NSMutableArray array],
@@ -144,9 +175,7 @@
         @"right": [NSMutableArray array]
     };
     
-    CGImageRef imageRef = [image CGImageForProposedRect:NULL context:nil hints:nil];
     NSBitmapImageRep *imageRepresentation = [[NSBitmapImageRep alloc] initWithCGImage:imageRef];
-    [imageRepresentation setSize:[image size]];
     
     BOOL isParsingBlackLine;
     
