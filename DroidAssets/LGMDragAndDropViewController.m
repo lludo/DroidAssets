@@ -30,24 +30,44 @@
 
 - (void)didDropFilesWithPaths:(NSArray *)paths {
     [paths enumerateObjectsUsingBlock:^(NSString *path, NSUInteger idx, BOOL *stop) {
-        NSString *resFolder = [LGMFileManager resFolderForImageAtPath:path];
-        NSString *imageName = [path lastPathComponent];
-        NSString *assetDensity = [LGMFileManager densityForImageAtPath:path];
-        NSArray *availableDensities = [LGMFileManager availableDensitiesForImageAtPath:path];
-        
-        // List of densities to generate
-        NSMutableArray *densityToGenerate = [availableDensities mutableCopy];
-        [densityToGenerate removeObject:assetDensity];
-        
-        // Generate the densities from the source image
-        [densityToGenerate enumerateObjectsUsingBlock:^(NSString *density, NSUInteger idx, BOOL *stop) {
-            NSImage *image = [LGMAssetResizer imageWithDensity:density fromDensity:assetDensity sourcePath:path];
-            
-            NSString *path = [NSString stringWithFormat:@"%@/drawable-%@/%@", resFolder ,density, imageName];
-            NSLog(@">>> Generating: %@ %@", path, NSStringFromSize(image.size));
-            [LGMFileManager saveImage:image atPath:path];
-        }];
+        if (![path hasSuffix:@".png"]) {
+            NSAlert *alert = [NSAlert alertWithMessageText:@"Invalid Image Format"
+                                             defaultButton:@"Ok"
+                                           alternateButton:nil
+                                               otherButton:nil
+                                 informativeTextWithFormat:@"DroidAssets only support PNG images and 9-patch (extensions .png and .9.png)."];
+            [alert setAlertStyle:NSWarningAlertStyle];
+            [alert runModal];
+            return;
+        }
     }];
+    
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+        
+        [paths enumerateObjectsUsingBlock:^(NSString *path, NSUInteger idx, BOOL *stop) {
+            NSString *resFolder = [LGMFileManager resFolderForImageAtPath:path];
+            NSString *imageName = [path lastPathComponent];
+            NSString *assetDensity = [LGMFileManager densityForImageAtPath:path];
+            NSArray *availableDensities = [LGMFileManager availableDensitiesForImageAtPath:path];
+            
+            // List of densities to generate
+            NSMutableArray *densityToGenerate = [availableDensities mutableCopy];
+            [densityToGenerate removeObject:assetDensity];
+            
+            // Generate the densities from the source image
+            [densityToGenerate enumerateObjectsUsingBlock:^(NSString *density, NSUInteger idx, BOOL *stop) {
+                NSImage *image = [LGMAssetResizer imageWithDensity:density fromDensity:assetDensity sourcePath:path];
+                
+                NSString *path = [NSString stringWithFormat:@"%@/drawable-%@/%@", resFolder ,density, imageName];
+                NSLog(@">>> Generating: %@", path);
+                [LGMFileManager saveImage:image atPath:path];
+            }];
+        }];
+        
+        //dispatch_async(dispatch_get_main_queue(), ^{
+        //
+        //});
+    });
 }
 
 @end
