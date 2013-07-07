@@ -41,11 +41,6 @@
 }
 
 + (void)saveImage:(NSBitmapImageRep *)imageRep atPath:(NSString *)path {
-    
-    //[image lockFocus];
-    //NSBitmapImageRep *imageRepresentation = [[NSBitmapImageRep alloc] initWithFocusedViewRect:NSMakeRect(0.0, 0.0, image.size.width, image.size.height)] ;
-    //[image unlockFocus];
-    
     NSData *data = [imageRep representationUsingType:NSPNGFileType properties:nil];
     [data writeToFile:path atomically:YES];
 }

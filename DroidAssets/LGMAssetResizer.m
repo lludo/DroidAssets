@@ -35,6 +35,7 @@
     float scale = [destinationScale floatValue] / [sourceScale floatValue];
     
     NSImage *inputImage = [[NSImage alloc] initWithContentsOfFile:imagePath];
+    CGImageRef imageRef = [inputImage CGImageForProposedRect:NULL context:nil hints:nil];
     NSSize inputImagePixelSize = inputImage.pixelSize;
     
     NSBitmapImageRep *outputImageRep;
@@ -58,10 +59,6 @@
         [NSGraphicsContext saveGraphicsState];
         [NSGraphicsContext setCurrentContext:[NSGraphicsContext graphicsContextWithBitmapImageRep:outputImageRep]];
         [[NSGraphicsContext currentContext] setImageInterpolation:NSImageInterpolationHigh];
-        
-        // Fill the background with white
-        [[NSColor whiteColor] setFill];
-        [NSBezierPath fillRect:NSMakeRect(0, 0, outputSize.width, outputSize.height)];
         
         // Draw the 9-patch arround the image
         [[NSColor blackColor] setFill];
@@ -147,18 +144,17 @@
         @"right": [NSMutableArray array]
     };
     
-    [image lockFocus] ;
-    NSBitmapImageRep *imageRepresentation = [[NSBitmapImageRep alloc] initWithFocusedViewRect:NSMakeRect(0.0, 0.0, image.pixelsWide, image.pixelsHigh)];
-    [image unlockFocus] ;
+    CGImageRef imageRef = [image CGImageForProposedRect:NULL context:nil hints:nil];
+    NSBitmapImageRep *imageRepresentation = [[NSBitmapImageRep alloc] initWithCGImage:imageRef];
+    [imageRepresentation setSize:[image size]];
     
     BOOL isParsingBlackLine;
-    NSColorSpace *grayColorSpace = [NSColorSpace deviceGrayColorSpace];
     
     // Top line
     isParsingBlackLine = NO;
     for (NSInteger x = 0; x < imageRepresentation.pixelsWide; x++) {
-        NSColor *color = [[imageRepresentation colorAtX:x y:0] colorUsingColorSpace:grayColorSpace];
-        if (color.whiteComponent < 0.1f) {
+        NSColor *color = [imageRepresentation colorAtX:x y:0];
+        if (color.alphaComponent > 0.1f) {
             if (!isParsingBlackLine) {
                 NSMutableArray *topArray = [patchDescription objectForKey:@"top"];
                 [topArray addObject:@(x)];
@@ -176,8 +172,8 @@
     // Bottom line
     isParsingBlackLine = NO;
     for (NSInteger x = 0; x < imageRepresentation.pixelsWide; x++) {
-        NSColor *color = [[imageRepresentation colorAtX:x y:imageRepresentation.pixelsHigh - 1] colorUsingColorSpace:grayColorSpace];
-        if (color.whiteComponent < 0.1f) {
+        NSColor *color = [imageRepresentation colorAtX:x y:imageRepresentation.pixelsHigh - 1];
+        if (color.alphaComponent > 0.1f) {
             if (!isParsingBlackLine) {
                 NSMutableArray *bottomArray = [patchDescription objectForKey:@"bottom"];
                 [bottomArray addObject:@(x)];
@@ -195,8 +191,8 @@
     // Left column
     isParsingBlackLine = NO;
     for (NSInteger y = 0; y < imageRepresentation.pixelsHigh; y++) {
-        NSColor *color = [[imageRepresentation colorAtX:0 y:y] colorUsingColorSpace:grayColorSpace];
-        if (color.whiteComponent < 0.1f) {
+        NSColor *color = [imageRepresentation colorAtX:0 y:y];
+        if (color.alphaComponent > 0.1f) {
             if (!isParsingBlackLine) {
                 NSMutableArray *leftArray = [patchDescription objectForKey:@"left"];
                 [leftArray addObject:@(y)];
@@ -214,8 +210,8 @@
     // Right column
     isParsingBlackLine = NO;
     for (NSInteger y = 0; y < imageRepresentation.pixelsHigh; y++) {
-        NSColor *color = [[imageRepresentation colorAtX:imageRepresentation.pixelsWide - 1 y:y] colorUsingColorSpace:grayColorSpace];
-        if (color.whiteComponent < 0.1f) {
+        NSColor *color = [imageRepresentation colorAtX:imageRepresentation.pixelsWide - 1 y:y];
+        if (color.alphaComponent > 0.1f) {
             if (!isParsingBlackLine) {
                 NSMutableArray *rightArray = [patchDescription objectForKey:@"right"];
                 [rightArray addObject:@(y)];

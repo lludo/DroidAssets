@@ -65,17 +65,6 @@
     if (self.delegate && [self.delegate respondsToSelector:@selector(didChangeState:)]) {
         [self.delegate didChangeState:value];
     }
-    
-    //[self setNeedsDisplay:YES];
-}
-
-- (void)drawRect:(NSRect)frame {
-    [super drawRect:frame];
-    if (isHighlighted) {
-        [NSBezierPath setDefaultLineWidth:6.0];
-        [[NSColor keyboardFocusIndicatorColor] set];
-        [NSBezierPath strokeRect:frame];
-    }
 }
 
 @end
