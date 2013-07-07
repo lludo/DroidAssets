@@ -62,6 +62,7 @@
         [paths enumerateObjectsUsingBlock:^(NSString *path, NSUInteger idx, BOOL *stop) {
             NSString *resFolder = [LGMFileManager resFolderForImageAtPath:path];
             NSString *imageName = [path lastPathComponent];
+            BOOL isNinePatch = [imageName hasSuffix:@".9.png"];
             NSString *assetDensity = [LGMFileManager densityForImageAtPath:path];
             NSArray *availableDensities = [LGMFileManager availableDensitiesForImageAtPath:path];
             
@@ -71,7 +72,7 @@
             
             // Generate the densities from the source image
             [densityToGenerate enumerateObjectsUsingBlock:^(NSString *density, NSUInteger idx, BOOL *stop) {
-                NSImage *image = [LGMAssetResizer imageWithDensity:density fromDensity:assetDensity sourcePath:path];
+                NSImage *image = [LGMAssetResizer imageWithDensity:density fromDensity:assetDensity sourcePath:path isNinePatch:isNinePatch];
                 
                 NSString *path = [NSString stringWithFormat:@"%@/drawable-%@/%@", resFolder ,density, imageName];
                 NSLog(@">>> Generating: %@", path);
