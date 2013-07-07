@@ -16,10 +16,10 @@
 
 @implementation LGMAssetResizer
 
-+ (NSImage *)imageWithDensity:(NSString *)destinationDensity
-                  fromDensity:(NSString *)sourceDensity
-                   sourcePath:(NSString *)imagePath
-                  isNinePatch:(BOOL)isNinePatch {
++ (NSBitmapImageRep *)imageWithDensity:(NSString *)destinationDensity
+                           fromDensity:(NSString *)sourceDensity
+                            sourcePath:(NSString *)imagePath
+                           isNinePatch:(BOOL)isNinePatch {
     
     NSDictionary *densitiesScale = @{
         @"ldpi": @(0.75),
@@ -36,16 +36,27 @@
     
     NSImage *inputImage = [[NSImage alloc] initWithContentsOfFile:imagePath];
     NSSize inputImagePixelSize = inputImage.pixelSize;
-    float pixelPerPoint = inputImagePixelSize.width / inputImage.size.width;
     
-    NSImage *outputImage;
+    NSBitmapImageRep *outputImageRep;
     if (isNinePatch) {
         // For images with 9-patch
-        NSSize outputSize = NSMakeSize(floorf(((inputImagePixelSize.width - 2) * scale + 2)) / pixelPerPoint,
-                                       floorf(((inputImagePixelSize.height - 2) * scale + 2)) / pixelPerPoint);
+        NSSize outputSize = NSMakeSize(floorf(((inputImagePixelSize.width - 2) * scale + 2)),
+                                       floorf(((inputImagePixelSize.height - 2) * scale + 2)));
         
-        outputImage = [[NSImage alloc] initWithSize:outputSize];
-        [outputImage lockFocus];
+        outputImageRep = [[NSBitmapImageRep alloc] initWithBitmapDataPlanes:nil
+                                                                 pixelsWide:outputSize.width
+                                                                 pixelsHigh:outputSize.height
+                                                              bitsPerSample:8
+                                                            samplesPerPixel:4
+                                                                   hasAlpha:YES
+                                                                   isPlanar:NO
+                                                             colorSpaceName:NSCalibratedRGBColorSpace
+                                                               bitmapFormat:0
+                                                                bytesPerRow:(4 * outputSize.width)
+                                                               bitsPerPixel:32];
+        
+        [NSGraphicsContext saveGraphicsState];
+        [NSGraphicsContext setCurrentContext:[NSGraphicsContext graphicsContextWithBitmapImageRep:outputImageRep]];
         [[NSGraphicsContext currentContext] setImageInterpolation:NSImageInterpolationHigh];
         
         // Fill the background with white
@@ -55,72 +66,77 @@
         // Draw the 9-patch arround the image
         [[NSColor blackColor] setFill];
         NSDictionary *patchDescription = [self getPatchDescriptionForImage:inputImage];
-        NSLog(@">> %@", patchDescription);
         NSArray *top = [patchDescription objectForKey:@"top"];
         for (NSInteger ndx = 0; ndx < [top count]; ndx = ndx+2) {
             float start = [[top objectAtIndex:ndx] floatValue];
             float stop = [[top objectAtIndex:ndx + 1] floatValue];
-            [NSBezierPath fillRect:NSMakeRect(floor(start * scale) / pixelPerPoint,
-                                              outputSize.height - 1 / pixelPerPoint,
-                                              floor((stop - start) * scale) / pixelPerPoint,
-                                              1 / pixelPerPoint)];
+            
+            float x = floorf(start * scale);
+            float width = floorf((stop - start) * scale);
+            [NSBezierPath fillRect:NSMakeRect((x) ? x : 1, outputSize.height - 1, (width) ? width : 1, 1)];
         }
         NSArray *left = [patchDescription objectForKey:@"left"];
         for (NSInteger ndx = 0; ndx < [left count]; ndx = ndx+2) {
             float start = [[left objectAtIndex:ndx] floatValue];
             float stop = [[left objectAtIndex:ndx + 1] floatValue];
-            [NSBezierPath fillRect:NSMakeRect(0,
-                                              floor(start * scale) / pixelPerPoint,
-                                              1 / pixelPerPoint,
-                                              floor((stop - start) * scale) / pixelPerPoint)];
+            
+            float y = floorf(start * scale);
+            float height = floorf((stop - start) * scale);
+            [NSBezierPath fillRect:NSMakeRect(0, (y) ? y : 1, 1, (height) ? height : 1)];
         }
         NSArray *bottom = [patchDescription objectForKey:@"bottom"];
         for (NSInteger ndx = 0; ndx < [bottom count]; ndx = ndx+2) {
             float start = [[bottom objectAtIndex:ndx] floatValue];
             float stop = [[bottom objectAtIndex:ndx + 1] floatValue];
-            [NSBezierPath fillRect:NSMakeRect(floor(start * scale) / pixelPerPoint,
-                                              0,
-                                              floor((stop - start) * scale) / pixelPerPoint,
-                                              1 / pixelPerPoint)];
+            
+            float x = floorf(start * scale);
+            float width = floorf((stop - start) * scale);
+            [NSBezierPath fillRect:NSMakeRect((x) ? x : 1, 0, (width) ? width : 1, 1)];
         }
         NSArray *right = [patchDescription objectForKey:@"right"];
         for (NSInteger ndx = 0; ndx < [right count]; ndx = ndx+2) {
             float start = [[right objectAtIndex:ndx] floatValue];
             float stop = [[right objectAtIndex:ndx + 1] floatValue];
-            [NSBezierPath fillRect:NSMakeRect(outputSize.width - 1 / pixelPerPoint,
-                                              floor(start * scale) / pixelPerPoint,
-                                              1 / pixelPerPoint,
-                                              floor((stop - start) * scale) / pixelPerPoint)];
+            
+            float y = floorf(start * scale);
+            float height = floorf((stop - start) * scale);
+            [NSBezierPath fillRect:NSMakeRect(outputSize.width - 1, (y) ? y : 1, 1, (height) ? height : 1)];
         }
         
         // Draw the image in the center
-        [inputImage drawInRect:NSMakeRect(1 / pixelPerPoint, 1 / pixelPerPoint,
-                                          outputSize.width - 2 / pixelPerPoint,
-                                          outputSize.height - 2 / pixelPerPoint)
-                      fromRect:NSMakeRect(1, 1,
-                                          outputSize.width  * pixelPerPoint - 3,
-                                          outputSize.height * pixelPerPoint - 3)
+        [inputImage drawInRect:NSMakeRect(1, 1, outputSize.width - 2, outputSize.height - 2)
+                      fromRect:NSMakeRect(1, 1, inputImage.size.width - 2, inputImage.size.height - 2)
                      operation:NSCompositeSourceOver
                       fraction:1.0];
-        [outputImage unlockFocus];
-        outputImage.size = outputSize;
+        [NSGraphicsContext restoreGraphicsState];
     } else {
         // For simple PNG images
-        NSSize outputSize = NSMakeSize(floorf(inputImagePixelSize.width * scale) / pixelPerPoint,
-                                       floorf(inputImagePixelSize.height * scale) / pixelPerPoint);
+        NSSize outputSize = NSMakeSize(floorf(inputImagePixelSize.width * scale),
+                                       floorf(inputImagePixelSize.height * scale));
         
-        outputImage = [[NSImage alloc] initWithSize:outputSize];
-        [outputImage lockFocus];
+        outputImageRep = [[NSBitmapImageRep alloc] initWithBitmapDataPlanes:nil
+                                                                 pixelsWide:outputSize.width
+                                                                 pixelsHigh:outputSize.height
+                                                              bitsPerSample:8
+                                                            samplesPerPixel:4
+                                                                   hasAlpha:YES
+                                                                   isPlanar:NO
+                                                             colorSpaceName:NSCalibratedRGBColorSpace
+                                                               bitmapFormat:0
+                                                                bytesPerRow:(4 * outputSize.width)
+                                                               bitsPerPixel:32];
+        
+        [NSGraphicsContext saveGraphicsState];
+        [NSGraphicsContext setCurrentContext:[NSGraphicsContext graphicsContextWithBitmapImageRep:outputImageRep]];
         [[NSGraphicsContext currentContext] setImageInterpolation:NSImageInterpolationHigh];
         [inputImage drawInRect:NSMakeRect(0, 0, outputSize.width, outputSize.height)
                       fromRect:NSZeroRect
                      operation:NSCompositeSourceOver
                       fraction:1.0];
-        [outputImage unlockFocus];
-        outputImage.size = outputSize;
+        [NSGraphicsContext restoreGraphicsState];
     }
     
-    return outputImage;
+    return outputImageRep;
 }
 
 + (NSDictionary *)getPatchDescriptionForImage:(NSImage *)image {

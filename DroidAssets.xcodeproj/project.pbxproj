@@ -66,7 +66,6 @@
 		82EAB24D178645610097307A = {
 			isa = PBXGroup;
 			children = (
-				82B43D301788A03F00BC3760 /* QuartzCore.framework */,
 				82EAB25F178645610097307A /* DroidAssets */,
 				82EAB258178645610097307A /* Frameworks */,
 				82EAB257178645610097307A /* Products */,
@@ -85,6 +84,7 @@
 			isa = PBXGroup;
 			children = (
 				82EAB259178645610097307A /* Cocoa.framework */,
+				82B43D301788A03F00BC3760 /* QuartzCore.framework */,
 				82EAB25B178645610097307A /* Other Frameworks */,
 			);
 			name = Frameworks;

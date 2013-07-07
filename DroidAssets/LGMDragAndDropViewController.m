@@ -72,11 +72,11 @@
             
             // Generate the densities from the source image
             [densityToGenerate enumerateObjectsUsingBlock:^(NSString *density, NSUInteger idx, BOOL *stop) {
-                NSImage *image = [LGMAssetResizer imageWithDensity:density fromDensity:assetDensity sourcePath:path isNinePatch:isNinePatch];
+                NSBitmapImageRep *imageRep = [LGMAssetResizer imageWithDensity:density fromDensity:assetDensity sourcePath:path isNinePatch:isNinePatch];
                 
                 NSString *path = [NSString stringWithFormat:@"%@/drawable-%@/%@", resFolder ,density, imageName];
                 NSLog(@">>> Generating: %@", path);
-                [LGMFileManager saveImage:image atPath:path];
+                [LGMFileManager saveImage:imageRep atPath:path];
             }];
         }];
         

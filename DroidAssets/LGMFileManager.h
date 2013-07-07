@@ -15,6 +15,6 @@
 + (NSString *)densityForImageAtPath:(NSString *)imagePath;
 + (NSArray *)availableDensitiesForImageAtPath:(NSString *)imagePath;
 
-+ (void)saveImage:(NSImage *)image atPath:(NSString *)path;
++ (void)saveImage:(NSBitmapImageRep *)imageRep atPath:(NSString *)path;
 
 @end

@@ -10,9 +10,9 @@
 
 @interface LGMAssetResizer : NSObject
 
-+ (NSImage *)imageWithDensity:(NSString *)destinationDensity
-                  fromDensity:(NSString *)sourceDensity
-                   sourcePath:(NSString *)imagePath
-                  isNinePatch:(BOOL)isNinePatch;
++ (NSBitmapImageRep *)imageWithDensity:(NSString *)destinationDensity
+                           fromDensity:(NSString *)sourceDensity
+                            sourcePath:(NSString *)imagePath
+                           isNinePatch:(BOOL)isNinePatch;
 
 @end
