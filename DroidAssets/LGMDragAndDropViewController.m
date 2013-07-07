@@ -12,52 +12,64 @@
 
 @interface LGMDragAndDropViewController ()
 @property (nonatomic, strong) LGMDragAndDropView *dragAndDropView;
+@property (nonatomic, strong) NSImageView *imageView;
 @end
 
 @implementation LGMDragAndDropViewController
 
 @synthesize dragAndDropView;
+@synthesize imageView;
 
 - (id)init {
     self = [super init];
     if (self) {
-        dragAndDropView = [[LGMDragAndDropView alloc] initWithFrame:self.view.frame];
+        imageView = [[NSImageView alloc] initWithFrame:self.view.bounds];
+        imageView.autoresizingMask = NSViewWidthSizable | NSViewHeightSizable;
+        self.imageView.image = [NSImage imageNamed:@"unselected"];
+        [self.view addSubview:imageView];
+        
+        dragAndDropView = [[LGMDragAndDropView alloc] initWithFrame:self.view.bounds];
+        dragAndDropView.autoresizingMask = NSViewWidthSizable | NSViewHeightSizable;
         dragAndDropView.delegate = self;
-        [[self view] addSubview:dragAndDropView];
+        [self.view addSubview:dragAndDropView];
     }
     return self;
 }
 
 - (void)didDropFilesWithPaths:(NSArray *)paths {
     
-    // Check if images are in the res/drawable-{density} folder
-    NSString *firstImagePath = [paths objectAtIndex:0];
-    if ([firstImagePath rangeOfString:@"/res/drawable-"].location == NSNotFound) {
-        NSAlert *alert = [NSAlert alertWithMessageText:@"Invalid Image Path"
-                                         defaultButton:@"Ok"
-                                       alternateButton:nil
-                                           otherButton:nil
-                             informativeTextWithFormat:@"DroidAssets only support drag and drop for images in the res/drawable-{density} folder."];
-        [alert setAlertStyle:NSWarningAlertStyle];
-        [alert runModal];
-        return;
-    }
-    
-    // Check if images are PGNs (including 9-patch)
-    [paths enumerateObjectsUsingBlock:^(NSString *path, NSUInteger idx, BOOL *stop) {
-        if (![path hasSuffix:@".png"]) {
-            NSAlert *alert = [NSAlert alertWithMessageText:@"Invalid Image Format"
-                                             defaultButton:@"Ok"
-                                           alternateButton:nil
-                                               otherButton:nil
-                                 informativeTextWithFormat:@"DroidAssets only support PNG images and 9-patch (extensions .png and .9.png)."];
-            [alert setAlertStyle:NSWarningAlertStyle];
-            [alert runModal];
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+        
+        // Check if images are in the res/drawable-{density} folder
+        NSString *firstImagePath = [paths objectAtIndex:0];
+        if ([firstImagePath rangeOfString:@"/res/drawable-"].location == NSNotFound) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                NSAlert *alert = [NSAlert alertWithMessageText:@"Invalid Image Path"
+                                                 defaultButton:@"Ok"
+                                               alternateButton:nil
+                                                   otherButton:nil
+                                     informativeTextWithFormat:@"DroidAssets only support drag and drop for images in the res/drawable-{density} folder."];
+                [alert setAlertStyle:NSWarningAlertStyle];
+                [alert runModal];
+            });
             return;
         }
-    }];
-    
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+        
+        // Check if images are PGNs (including 9-patch)
+        [paths enumerateObjectsUsingBlock:^(NSString *path, NSUInteger idx, BOOL *stop) {
+            if (![path hasSuffix:@".png"]) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    NSAlert *alert = [NSAlert alertWithMessageText:@"Invalid Image Format"
+                                                     defaultButton:@"Ok"
+                                                   alternateButton:nil
+                                                       otherButton:nil
+                                         informativeTextWithFormat:@"DroidAssets only support PNG images and 9-patch (extensions .png and .9.png)."];
+                    [alert setAlertStyle:NSWarningAlertStyle];
+                    [alert runModal];
+                });
+                return;
+            }
+        }];
         
         [paths enumerateObjectsUsingBlock:^(NSString *path, NSUInteger idx, BOOL *stop) {
             NSString *resFolder = [LGMFileManager resFolderForImageAtPath:path];
@@ -84,6 +96,10 @@
         //
         //});
     });
+}
+
+- (void)didChangeState:(BOOL)selected {
+    self.imageView.image = [NSImage imageNamed: (selected) ? @"selected" : @"unselected"];
 }
 
 @end

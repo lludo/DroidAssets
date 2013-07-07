@@ -61,7 +61,12 @@
 
 - (void)setHighlighted:(BOOL)value {
     isHighlighted = value;
-    [self setNeedsDisplay:YES];
+    
+    if (self.delegate && [self.delegate respondsToSelector:@selector(didChangeState:)]) {
+        [self.delegate didChangeState:value];
+    }
+    
+    //[self setNeedsDisplay:YES];
 }
 
 - (void)drawRect:(NSRect)frame {

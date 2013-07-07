@@ -11,6 +11,7 @@
 @protocol LGMDragAndDropViewDelegate <NSObject>
 
 - (void)didDropFilesWithPaths:(NSArray *)paths;
+- (void)didChangeState:(BOOL)selected;
 
 @end
 
