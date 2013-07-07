@@ -29,6 +29,21 @@
 }
 
 - (void)didDropFilesWithPaths:(NSArray *)paths {
+    
+    // Check if images are in the res/drawable-{density} folder
+    NSString *firstImagePath = [paths objectAtIndex:0];
+    if ([firstImagePath rangeOfString:@"/res/drawable-"].location == NSNotFound) {
+        NSAlert *alert = [NSAlert alertWithMessageText:@"Invalid Image Path"
+                                         defaultButton:@"Ok"
+                                       alternateButton:nil
+                                           otherButton:nil
+                             informativeTextWithFormat:@"DroidAssets only support drag and drop for images in the res/drawable-{density} folder."];
+        [alert setAlertStyle:NSWarningAlertStyle];
+        [alert runModal];
+        return;
+    }
+    
+    // Check if images are PGNs (including 9-patch)
     [paths enumerateObjectsUsingBlock:^(NSString *path, NSUInteger idx, BOOL *stop) {
         if (![path hasSuffix:@".png"]) {
             NSAlert *alert = [NSAlert alertWithMessageText:@"Invalid Image Format"
