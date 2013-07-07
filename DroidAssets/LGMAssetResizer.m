@@ -7,6 +7,7 @@
 //
 
 #import "LGMAssetResizer.h"
+#import "NSImage+PixelSize.h"
 #include <QuartzCore/CoreImage.h>
 
 @implementation LGMAssetResizer
@@ -24,27 +25,26 @@
     
     NSNumber *sourceScale = [densitiesScale valueForKey:sourceDensity];
     NSNumber *destinationScale = [densitiesScale valueForKey:destinationDensity];
-    float ratio = [destinationScale floatValue] / [sourceScale floatValue];
+    float scale = [destinationScale floatValue] / [sourceScale floatValue];
     
-    NSURL *imageUrl = [NSURL fileURLWithPath:imagePath];
-    CIImage *ciImage = [CIImage imageWithContentsOfURL:imageUrl];
+    NSImage *inputImage = [[NSImage alloc] initWithContentsOfFile:imagePath];
+    NSSize inputImagePixelSize = inputImage.pixelSize;
+    float pixelPerPoint = inputImagePixelSize.width / inputImage.size.width;
     
-    // Resize the image
-    CIFilter *scaleFilter = [CIFilter filterWithName:@"CILanczosScaleTransform"];
-    [scaleFilter setValue:ciImage forKey:@"inputImage"];
-    [scaleFilter setValue:[NSNumber numberWithFloat:ratio] forKey:@"inputScale"];
-    [scaleFilter setValue:[NSNumber numberWithFloat:1.0] forKey:@"inputAspectRatio"];
-    CIImage *finalCiImage = [scaleFilter valueForKey:@"outputImage"];
+    NSSize outputSize = NSMakeSize(floorf(inputImagePixelSize.width * scale / pixelPerPoint),
+                                   floorf(inputImagePixelSize.height * scale / pixelPerPoint));
     
-    NSSize size = finalCiImage.extent.size;
-    NSImage *resized = [[NSImage alloc] initWithSize:size];
-    [resized lockFocus];
-    [finalCiImage drawAtPoint:NSZeroPoint
-                     fromRect:NSMakeRect(0, 0, size.width, size.height)
-                    operation:NSCompositeCopy fraction:1.0];
-    [resized unlockFocus];
+    NSImage *outputImage = [[NSImage alloc] initWithSize:outputSize];
+    [outputImage lockFocus];
+    [[NSGraphicsContext currentContext] setImageInterpolation:NSImageInterpolationHigh];
+    [inputImage drawInRect:NSMakeRect(0, 0, outputSize.width, outputSize.height)
+                  fromRect:NSZeroRect
+                 operation:NSCompositeSourceOver
+                  fraction:1.0];
+    [outputImage unlockFocus];
+    outputImage.size = outputSize;
     
-    return resized;
+    return outputImage;
 }
 
 @end

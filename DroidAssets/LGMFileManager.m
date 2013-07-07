@@ -42,11 +42,9 @@
 
 + (void)saveImage:(NSImage *)image atPath:(NSString *)path {
     
-    [image lockFocus] ;
-    NSBitmapImageRep *imageRepresentation = [[NSBitmapImageRep alloc] initWithFocusedViewRect:NSMakeRect(0.0, 0.0, image.pixelsWide, image.pixelsHigh)] ;
-    [image unlockFocus] ;
-    
-    NSLog(@">>> %@", imageRepresentation);
+    [image lockFocus];
+    NSBitmapImageRep *imageRepresentation = [[NSBitmapImageRep alloc] initWithFocusedViewRect:NSMakeRect(0.0, 0.0, image.size.width, image.size.height)] ;
+    [image unlockFocus];
     
     NSData *data = [imageRepresentation representationUsingType:NSPNGFileType properties:nil];
     [data writeToFile:path atomically:YES];
