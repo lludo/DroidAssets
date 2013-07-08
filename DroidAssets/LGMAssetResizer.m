@@ -45,8 +45,9 @@
         NSSize contentOriginalSize = NSMakeSize(floorf(inputImagePixelSize.width - 2),
                                                 floorf(inputImagePixelSize.height - 2));
         
-        NSSize outputSize = NSMakeSize(floorf(contentOriginalSize.width * scale) + 2,
-                                       floorf(contentOriginalSize.height * scale) + 2);
+        float width = floorf(contentOriginalSize.width * scale);
+        float height = floorf(contentOriginalSize.height * scale);
+        NSSize outputSize = NSMakeSize((width) ? width : 1 + 2, (height) ? height : 1 + 2);
         
         NSBitmapImageRep *contentImageRep = [[NSBitmapImageRep alloc] initWithBitmapDataPlanes:nil
                                                                                     pixelsWide:contentOriginalSize.width
@@ -139,8 +140,9 @@
         
     } else {
         // For simple PNG images
-        NSSize outputSize = NSMakeSize(floorf(inputImagePixelSize.width * scale),
-                                       floorf(inputImagePixelSize.height * scale));
+        float width = floorf(inputImagePixelSize.width * scale);
+        float height = floorf(inputImagePixelSize.height * scale);
+        NSSize outputSize = NSMakeSize((width) ? width : 1, (height) ? height : 1);
         
         outputImageRep = [[NSBitmapImageRep alloc] initWithBitmapDataPlanes:nil
                                                                  pixelsWide:outputSize.width
