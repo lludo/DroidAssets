@@ -42,11 +42,11 @@
     
     if (isNinePatch) {
         // For images with 9-patch
-        NSSize contentOriginalSize = NSMakeSize(floorf(inputImagePixelSize.width - 2),
-                                                floorf(inputImagePixelSize.height - 2));
+        NSSize contentOriginalSize = NSMakeSize(roundf(inputImagePixelSize.width - 2),
+                                                roundf(inputImagePixelSize.height - 2));
         
-        float width = floorf(contentOriginalSize.width * scale);
-        float height = floorf(contentOriginalSize.height * scale);
+        float width = roundf(contentOriginalSize.width * scale);
+        float height = roundf(contentOriginalSize.height * scale);
         NSSize outputSize = NSMakeSize((width) ? width : 1 + 2, (height) ? height : 1 + 2);
         
         NSBitmapImageRep *contentImageRep = [[NSBitmapImageRep alloc] initWithBitmapDataPlanes:nil
@@ -97,7 +97,7 @@
             float stop = [[top objectAtIndex:ndx + 1] floatValue];
             
             float x = floorf(start * scale);
-            float width = floorf((stop - start) * scale);
+            float width = ceilf((stop - start) * scale);
             [NSBezierPath fillRect:NSMakeRect((x) ? x : 1, outputSize.height - 1, (width) ? width : 1, 1)];
         }
         NSArray *left = [patchDescription objectForKey:@"left"];
@@ -106,7 +106,7 @@
             float stop = [[left objectAtIndex:ndx + 1] floatValue];
             
             float y = floorf(start * scale);
-            float height = floorf((stop - start) * scale);
+            float height = ceilf((stop - start) * scale);
             [NSBezierPath fillRect:NSMakeRect(0, (y) ? y : 1, 1, (height) ? height : 1)];
         }
         NSArray *bottom = [patchDescription objectForKey:@"bottom"];
@@ -115,7 +115,7 @@
             float stop = [[bottom objectAtIndex:ndx + 1] floatValue];
             
             float x = floorf(start * scale);
-            float width = floorf((stop - start) * scale);
+            float width = ceilf((stop - start) * scale);
             [NSBezierPath fillRect:NSMakeRect((x) ? x : 1, 0, (width) ? width : 1, 1)];
         }
         NSArray *right = [patchDescription objectForKey:@"right"];
@@ -124,7 +124,7 @@
             float stop = [[right objectAtIndex:ndx + 1] floatValue];
             
             float y = floorf(start * scale);
-            float height = floorf((stop - start) * scale);
+            float height = ceilf((stop - start) * scale);
             [NSBezierPath fillRect:NSMakeRect(outputSize.width - 1, (y) ? y : 1, 1, (height) ? height : 1)];
         }
         
@@ -140,8 +140,8 @@
         
     } else {
         // For simple PNG images
-        float width = floorf(inputImagePixelSize.width * scale);
-        float height = floorf(inputImagePixelSize.height * scale);
+        float width = roundf(inputImagePixelSize.width * scale);
+        float height = roundf(inputImagePixelSize.height * scale);
         NSSize outputSize = NSMakeSize((width) ? width : 1, (height) ? height : 1);
         
         outputImageRep = [[NSBitmapImageRep alloc] initWithBitmapDataPlanes:nil
