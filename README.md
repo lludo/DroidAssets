@@ -9,7 +9,7 @@ DroidAssets allows you to generate all the assets you need for your Android appl
 
 It's open source and free to download on [MacUpdate](https://www.macupdate.com/app/mac/48592/droidassets).
 
-## Screenshots
+## Screenshot
 
 <img width="720" src="https://raw.github.com/little-green-men/DroidAssets/master/Resources/Screen%20Shot%202013-07-07%20at%2010.26.27%20PM.png?raw=true">
 
