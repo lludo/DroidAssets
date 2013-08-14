@@ -32,7 +32,7 @@
 	<string>MainMenu</string>
 	<key>NSPrincipalClass</key>
 	<string>NSApplication</string>
-	<key>SUFeedURLKey</key>
+	<key>SUFeedURL</key>
 	<string>https://raw.github.com/little-green-men/DroidAssets/master/Versions/appcast.xml</string>
 </dict>
 </plist>
