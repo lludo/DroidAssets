@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		824BAFD617BAF9D8009375F8 /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 824BAFD517BAF9D8009375F8 /* Sparkle.framework */; };
 		827373EC178A59D400A84C7C /* Icon.icns in Resources */ = {isa = PBXBuildFile; fileRef = 827373EB178A59D400A84C7C /* Icon.icns */; };
 		82A064B41789F03900AB7435 /* selected.png in Resources */ = {isa = PBXBuildFile; fileRef = 82A064B01789F03900AB7435 /* selected.png */; };
 		82A064B51789F03900AB7435 /* selected@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 82A064B11789F03900AB7435 /* selected@2x.png */; };
@@ -14,6 +15,7 @@
 		82A064B71789F03900AB7435 /* unselected@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 82A064B31789F03900AB7435 /* unselected@2x.png */; };
 		82B43D311788A03F00BC3760 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 82B43D301788A03F00BC3760 /* QuartzCore.framework */; };
 		82B43D341788B14F00BC3760 /* NSImage+PixelSize.m in Sources */ = {isa = PBXBuildFile; fileRef = 82B43D331788B14F00BC3760 /* NSImage+PixelSize.m */; };
+		82E93E2117BAFB03001379E3 /* Sparkle.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 824BAFD517BAF9D8009375F8 /* Sparkle.framework */; };
 		82EAB25A178645610097307A /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 82EAB259178645610097307A /* Cocoa.framework */; };
 		82EAB264178645610097307A /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 82EAB262178645610097307A /* InfoPlist.strings */; };
 		82EAB266178645610097307A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 82EAB265178645610097307A /* main.m */; };
@@ -27,7 +29,21 @@
 		82EAB28317864F730097307A /* LGMFileManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 82EAB28217864F730097307A /* LGMFileManager.m */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		82E93E2017BAFAA5001379E3 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				82E93E2117BAFB03001379E3 /* Sparkle.framework in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
+		824BAFD517BAF9D8009375F8 /* Sparkle.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Sparkle.framework; path = DroidAssets/Sparkle.framework; sourceTree = "<group>"; };
 		827373EB178A59D400A84C7C /* Icon.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = Icon.icns; sourceTree = "<group>"; };
 		82A064B01789F03900AB7435 /* selected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = selected.png; sourceTree = "<group>"; };
 		82A064B11789F03900AB7435 /* selected@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "selected@2x.png"; sourceTree = "<group>"; };
@@ -38,9 +54,6 @@
 		82B43D331788B14F00BC3760 /* NSImage+PixelSize.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSImage+PixelSize.m"; sourceTree = "<group>"; };
 		82EAB256178645610097307A /* DroidAssets.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DroidAssets.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		82EAB259178645610097307A /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
-		82EAB25C178645610097307A /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
-		82EAB25D178645610097307A /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
-		82EAB25E178645610097307A /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		82EAB261178645610097307A /* DroidAssets-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "DroidAssets-Info.plist"; sourceTree = "<group>"; };
 		82EAB263178645610097307A /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		82EAB265178645610097307A /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -66,6 +79,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				82B43D311788A03F00BC3760 /* QuartzCore.framework in Frameworks */,
+				824BAFD617BAF9D8009375F8 /* Sparkle.framework in Frameworks */,
 				82EAB25A178645610097307A /* Cocoa.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -115,19 +129,9 @@
 			children = (
 				82EAB259178645610097307A /* Cocoa.framework */,
 				82B43D301788A03F00BC3760 /* QuartzCore.framework */,
-				82EAB25B178645610097307A /* Other Frameworks */,
+				824BAFD517BAF9D8009375F8 /* Sparkle.framework */,
 			);
 			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		82EAB25B178645610097307A /* Other Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				82EAB25C178645610097307A /* AppKit.framework */,
-				82EAB25D178645610097307A /* CoreData.framework */,
-				82EAB25E178645610097307A /* Foundation.framework */,
-			);
-			name = "Other Frameworks";
 			sourceTree = "<group>";
 		};
 		82EAB25F178645610097307A /* DroidAssets */ = {
@@ -175,6 +179,7 @@
 				82EAB252178645610097307A /* Sources */,
 				82EAB253178645610097307A /* Frameworks */,
 				82EAB254178645610097307A /* Resources */,
+				82E93E2017BAFAA5001379E3 /* CopyFiles */,
 			);
 			buildRules = (
 			);
@@ -194,6 +199,11 @@
 				CLASSPREFIX = LGM;
 				LastUpgradeCheck = 0460;
 				ORGANIZATIONNAME = "Little Green Mens";
+				TargetAttributes = {
+					82EAB255178645610097307A = {
+						DevelopmentTeam = D6826XDERA;
+					};
+				};
 			};
 			buildConfigurationList = 82EAB251178645610097307A /* Build configuration list for PBXProject "DroidAssets" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -338,8 +348,11 @@
 		82EAB274178645610097307A /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "Mac Developer";
 				COMBINE_HIDPI_IMAGES = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"/Users/Ludo/Documents/iOS/Little-Green-Mens/DroidAssets/DroidAssets",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "DroidAssets/DroidAssets-Prefix.pch";
 				INFOPLIST_FILE = "DroidAssets/DroidAssets-Info.plist";
@@ -352,8 +365,11 @@
 		82EAB275178645610097307A /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "Mac Developer";
 				COMBINE_HIDPI_IMAGES = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"/Users/Ludo/Documents/iOS/Little-Green-Mens/DroidAssets/DroidAssets",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "DroidAssets/DroidAssets-Prefix.pch";
 				INFOPLIST_FILE = "DroidAssets/DroidAssets-Info.plist";
