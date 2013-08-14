@@ -11,8 +11,8 @@
 
 @interface NSImage (PixelSize)
 
-- (NSInteger) pixelsWide;
-- (NSInteger) pixelsHigh;
-- (NSSize) pixelSize;
+- (NSInteger)pixelsWide;
+- (NSInteger)pixelsHigh;
+- (NSSize)pixelSize;
 
 @end

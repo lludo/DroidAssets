@@ -98,7 +98,13 @@
             
             float x = floorf(start * scale);
             float width = ceilf((stop - start) * scale);
-            [NSBezierPath fillRect:NSMakeRect((x) ? x : 1, outputSize.height - 1, (width) ? width : 1, 1)];
+            
+            // Ajust the values to be visible after reduction and to not go over the patch area on the corners
+            x = (x) ? x : 1;
+            width = (width) ? width : 1;
+            width = (x + width >= outputSize.width) ? MAX(0, outputSize.width - x - 1) : width;
+            
+            [NSBezierPath fillRect:NSMakeRect(x, outputSize.height - 1, width, 1)];
         }
         NSArray *left = [patchDescription objectForKey:@"left"];
         for (NSInteger ndx = 0; ndx < [left count]; ndx = ndx+2) {
@@ -107,7 +113,13 @@
             
             float y = floorf(start * scale);
             float height = ceilf((stop - start) * scale);
-            [NSBezierPath fillRect:NSMakeRect(0, (y) ? y : 1, 1, (height) ? height : 1)];
+            
+            // Ajust the values to be visible after reduction and to not go over the patch area on the corners
+            y = (y) ? y : 1;
+            height = (height) ? height : 1;
+            height = (y + height >= outputSize.height) ? MAX(0, outputSize.height - y - 1) : height;
+            
+            [NSBezierPath fillRect:NSMakeRect(0, y, 1, height)];
         }
         NSArray *bottom = [patchDescription objectForKey:@"bottom"];
         for (NSInteger ndx = 0; ndx < [bottom count]; ndx = ndx+2) {
@@ -116,7 +128,13 @@
             
             float x = floorf(start * scale);
             float width = ceilf((stop - start) * scale);
-            [NSBezierPath fillRect:NSMakeRect((x) ? x : 1, 0, (width) ? width : 1, 1)];
+            
+            // Ajust the values to be visible after reduction and to not go over the patch area on the corners
+            x = (x) ? x : 1;
+            width = (width) ? width : 1;
+            width = (x + width >= outputSize.width) ? MAX(0, outputSize.width - x - 1) : width;
+            
+            [NSBezierPath fillRect:NSMakeRect(x, 0, width, 1)];
         }
         NSArray *right = [patchDescription objectForKey:@"right"];
         for (NSInteger ndx = 0; ndx < [right count]; ndx = ndx+2) {
@@ -125,7 +143,13 @@
             
             float y = floorf(start * scale);
             float height = ceilf((stop - start) * scale);
-            [NSBezierPath fillRect:NSMakeRect(outputSize.width - 1, (y) ? y : 1, 1, (height) ? height : 1)];
+            
+            // Ajust the values to be visible after reduction and to not go over the patch area on the corners
+            y = (y) ? y : 1;
+            height = (height) ? height : 1;
+            height = (y + height >= outputSize.height) ? MAX(0, outputSize.height - y - 1) : height;
+            
+            [NSBezierPath fillRect:NSMakeRect(outputSize.width - 1, y, 1, height)];
         }
         
         // Draw the image in the center
