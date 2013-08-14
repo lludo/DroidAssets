@@ -45,9 +45,10 @@
         NSSize contentOriginalSize = NSMakeSize(roundf(inputImagePixelSize.width - 2),
                                                 roundf(inputImagePixelSize.height - 2));
         
-        float width = roundf(contentOriginalSize.width * scale);
-        float height = roundf(contentOriginalSize.height * scale);
-        NSSize outputSize = NSMakeSize((width) ? width : 1 + 2, (height) ? height : 1 + 2);
+        float width = MAX(1, roundf(contentOriginalSize.width * scale));
+        float height = MAX(1, roundf(contentOriginalSize.height * scale));
+        
+        NSSize outputSize = NSMakeSize(width + 2, height + 2);
         
         NSBitmapImageRep *contentImageRep = [[NSBitmapImageRep alloc] initWithBitmapDataPlanes:nil
                                                                                     pixelsWide:contentOriginalSize.width
@@ -96,13 +97,13 @@
             float start = [[top objectAtIndex:ndx] floatValue];
             float stop = [[top objectAtIndex:ndx + 1] floatValue];
             
-            float x = floorf(start * scale);
-            float width = ceilf((stop - start) * scale);
+            float x = MAX(1, floorf(start * scale));
+            float width = MAX(1, ceilf((stop - start) * scale));
             
             // Ajust the values to be visible after reduction and to not go over the patch area on the corners
-            x = (x) ? x : 1;
-            width = (width) ? width : 1;
-            width = (x + width >= outputSize.width) ? MAX(0, outputSize.width - x - 1) : width;
+            if (x + width >= outputSize.width) {
+                width = MAX(0, outputSize.width - x - 1);
+            }
             
             [NSBezierPath fillRect:NSMakeRect(x, outputSize.height - 1, width, 1)];
         }
@@ -111,28 +112,28 @@
             float start = [[left objectAtIndex:ndx] floatValue];
             float stop = [[left objectAtIndex:ndx + 1] floatValue];
             
-            float y = floorf(start * scale);
-            float height = ceilf((stop - start) * scale);
+            float y = MAX(1, floorf(start * scale));
+            float height = MAX(1, ceilf((stop - start) * scale));
             
             // Ajust the values to be visible after reduction and to not go over the patch area on the corners
-            y = (y) ? y : 1;
-            height = (height) ? height : 1;
-            height = (y + height >= outputSize.height) ? MAX(0, outputSize.height - y - 1) : height;
+            if (y + height >= outputSize.height) {
+                height = MAX(0, outputSize.height - y - 1);
+            }
             
-            [NSBezierPath fillRect:NSMakeRect(0, y, 1, height)];
+            [NSBezierPath fillRect:NSMakeRect(0, outputSize.height - height - y, 1, height)];
         }
         NSArray *bottom = [patchDescription objectForKey:@"bottom"];
         for (NSInteger ndx = 0; ndx < [bottom count]; ndx = ndx+2) {
             float start = [[bottom objectAtIndex:ndx] floatValue];
             float stop = [[bottom objectAtIndex:ndx + 1] floatValue];
             
-            float x = floorf(start * scale);
-            float width = ceilf((stop - start) * scale);
+            float x = MAX(1, floorf(start * scale));
+            float width = MAX(1, ceilf((stop - start) * scale));
             
             // Ajust the values to be visible after reduction and to not go over the patch area on the corners
-            x = (x) ? x : 1;
-            width = (width) ? width : 1;
-            width = (x + width >= outputSize.width) ? MAX(0, outputSize.width - x - 1) : width;
+            if (x + width >= outputSize.width) {
+                width = MAX(0, outputSize.width - x - 1);
+            }
             
             [NSBezierPath fillRect:NSMakeRect(x, 0, width, 1)];
         }
@@ -141,15 +142,15 @@
             float start = [[right objectAtIndex:ndx] floatValue];
             float stop = [[right objectAtIndex:ndx + 1] floatValue];
             
-            float y = floorf(start * scale);
-            float height = ceilf((stop - start) * scale);
+            float y = MAX(1, floorf(start * scale));
+            float height = MAX(1, ceilf((stop - start) * scale));
             
             // Ajust the values to be visible after reduction and to not go over the patch area on the corners
-            y = (y) ? y : 1;
-            height = (height) ? height : 1;
-            height = (y + height >= outputSize.height) ? MAX(0, outputSize.height - y - 1) : height;
+            if (y + height >= outputSize.height) {
+                height = MAX(0, outputSize.height - y - 1);
+            }
             
-            [NSBezierPath fillRect:NSMakeRect(outputSize.width - 1, y, 1, height)];
+            [NSBezierPath fillRect:NSMakeRect(outputSize.width - 1, outputSize.height - height - y, 1, height)];
         }
         
         // Draw the image in the center
@@ -164,9 +165,10 @@
         
     } else {
         // For simple PNG images
-        float width = roundf(inputImagePixelSize.width * scale);
-        float height = roundf(inputImagePixelSize.height * scale);
-        NSSize outputSize = NSMakeSize((width) ? width : 1, (height) ? height : 1);
+        float width = MAX(1, roundf(inputImagePixelSize.width * scale));
+        float height = MAX(1, roundf(inputImagePixelSize.height * scale));
+        
+        NSSize outputSize = NSMakeSize(width, height);
         
         outputImageRep = [[NSBitmapImageRep alloc] initWithBitmapDataPlanes:nil
                                                                  pixelsWide:outputSize.width
